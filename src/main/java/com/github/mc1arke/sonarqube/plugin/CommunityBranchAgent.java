@@ -102,7 +102,7 @@ public final class CommunityBranchAgent {
         };
     }
 
-    private static Redefiner redefineIsAvailableFlag());() {
+    private static Redefiner redefineIsAvailableFlag() {
         return ctClass -> {
             CtMethod ctMethod = ctClass.getDeclaredMethod("isAvailable");
             ctMethod.setBody("return true;");
