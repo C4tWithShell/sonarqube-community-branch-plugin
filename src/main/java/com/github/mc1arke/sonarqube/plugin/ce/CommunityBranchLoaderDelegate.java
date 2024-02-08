@@ -102,7 +102,13 @@ public class CommunityBranchLoaderDelegate implements BranchLoaderDelegate {
     private static Branch createBranch(DbClient dbClient, String branchName, String projectUuid, String targetBranch) {
         String targetUuid;
         if (null == targetBranch) {
-            targetUuid = projectUuid;
+            Optional<BranchDto> branchDto = findBranchByUuid(projectUuid, dbClient);
+            if (branchDto.isPresent()) {
+                targetUuid = branchDto.get().getUuid();
+            } else {
+                throw new IllegalStateException(
+                        String.format("Could not find main branch within project '%s'", projectUuid));
+            }
         } else {
             Optional<BranchDto> branchDto = findBranchByKey(projectUuid, targetBranch, dbClient);
             if (branchDto.isPresent()) {
